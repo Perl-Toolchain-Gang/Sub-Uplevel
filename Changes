@@ -1,6 +1,6 @@
 Changes for Sub::Uplevel
 
-0.11_01
+0.11_01 Fri Apr 21 00:49:51 EDT 2006
     - uplevel now keeps a proper stack of uplevel calls allowing
       nesting of uplevel and non-uplevel calls
 
