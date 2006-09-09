@@ -2,7 +2,7 @@
 
 use lib qw(t/lib);
 use strict;
-use Test::More tests => 18;
+use Test::More tests => 20;
 
 BEGIN { use_ok('Sub::Uplevel'); }
 can_ok('Sub::Uplevel', 'uplevel');
@@ -62,10 +62,12 @@ is( $warning, "HA!  You don't fool me! at $0 line 44.\n", 'warn() fooled' );
 # Carp?
 use Carp;
 sub try_croak {
-    croak("You couldn't fool me on the foolingest day of the year!");
+# line 64
+    croak("Now we can fool croak!");
 }
 
 sub wrap_croak {
+# line 68
     uplevel 1, \&try_croak;
 }
 
@@ -74,7 +76,7 @@ my $croak_diag = $] <= 5.006 ? 'require 0' : 'eval {...}';
 # line 72
 eval { wrap_croak() };
 is( $@, <<CARP, 'croak() fooled');
-You couldn't fool me on the foolingest day of the year! at $0 line 68
+Now we can fool croak! at $0 line 64
 	main::wrap_croak() called at $0 line 72
 	$croak_diag called at $0 line 72
 CARP
@@ -89,7 +91,8 @@ is( $@, "Dying at $0 line 81.\n",           'die() not screwed up' );
 
 # how about carp?
 sub try_carp {
-    carp "HA!  You don't fool me!";
+# line 88
+    carp "HA!  Even carp is fooled!";
 }
 
 sub wrap_carp {
@@ -104,7 +107,7 @@ $warning = '';
     wrap_carp();
 }
 is( $warning, <<CARP, 'carp() fooled' );
-HA!  You don't fool me! at $0 line 92
+HA!  Even carp is fooled! at $0 line 88
 	main::wrap_carp() called at $0 line 98
 CARP
 
@@ -118,11 +121,11 @@ sub core_caller_check {
 }
 
 sub caller_check {
-    return caller(0);
+    return caller(shift);
 }
 
-ok( eq_array([caller_check()], 
-             ['main', $0, 122, 'main::caller_check', (caller_check)[4..9]]),
+ok( eq_array([caller_check(0)], 
+             ['main', $0, 122, 'main::caller_check', (caller_check(0))[4..9]]),
     'caller check' );
 
 sub deep_caller {
@@ -154,3 +157,23 @@ sub yarrow { uplevel 1, \&target }
 sub hock   { uplevel 1, \&yarrow }
 
 ok( eq_array([(hock)], ['main', $0, 154]),  'nested uplevel()s' );
+
+# Deep caller inside uplevel
+package Delegator; 
+# line 159
+sub delegate { main::caller_check(shift) }
+    
+package Wrapper;
+use Sub::Uplevel;
+sub wrap { uplevel 1, \&Delegator::delegate, @_ }
+
+package main;
+
+is( (Wrapper::wrap(0))[0], 'Delegator', 
+    'deep caller check of parent sees real calling package' 
+);
+
+is( (Wrapper::wrap(1))[0], 'main', 
+    'deep caller check of grandparent sees package above uplevel' 
+);
+

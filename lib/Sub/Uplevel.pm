@@ -48,7 +48,7 @@ B<THIS IS NOT THE SORT OF THING YOU WANT TO DO EVERYDAY>
 
 Makes the given function think it's being executed $num_frames higher
 than the current stack level.  So when they use caller($frames) it
-will actually caller($frames + $num_frames) for them.
+will actually give caller($frames + $num_frames) for them.
 
 C<uplevel(1, \&some_func, @_)> is effectively C<goto &some_func> but
 you don't immediately exit the current subroutine.  So while you can't
@@ -72,11 +72,12 @@ you can do this:
 
 =cut
 
-our $Up_Frames = 0;
+our @Up_Frames; # uplevel stack
+
 sub uplevel {
     my($num_frames, $func, @args) = @_;
-    local $Up_Frames = $num_frames + $Up_Frames;
-
+    
+    local @Up_Frames = ($num_frames, @Up_Frames );
     return $func->(@args);
 }
 
@@ -84,8 +85,12 @@ sub uplevel {
 sub _setup_CORE_GLOBAL {
     no warnings 'redefine';
 
-    *CORE::GLOBAL::caller = sub {
+    *CORE::GLOBAL::caller = sub(;$) {
         my $height = $_[0] || 0;
+
+        # shortcut if no uplevels have been called
+        # always add +1 to CORE::caller to skip this function's caller
+        return CORE::caller( $height + 1 ) if ! @Up_Frames;
 
 =begin _private
 
@@ -112,24 +117,49 @@ before or after Sub::Uplevel::uplevel().
 
 =end _private
 
+=begin _dagolden
+
+I found the description above a bit confusing.  Instead, this is the logic
+that I found clearer when CORE::GLOBAL::caller is invoked and we have to
+walk up the call stack:
+
+* if searching up to the requested height in the real call stack doesn't find
+a call to uplevel, then we can return the result at that height in the
+call stack
+
+* if we find a call to uplevel, we need to keep searching upwards beyond the
+requested height at least by the amount of upleveling requested for that
+call to uplevel (from the Up_Frames stack set during the uplevel call)
+
+* additionally, we need to hide the uplevel subroutine call, too, so we search
+upwards one more level for each call to uplevel
+
+* when we've reached the top of the search, we want to return that frame
+in the call stack, i.e. the requested height plus any uplevel adjustments
+found during the search
+
+=end _dagolden
+        
 =cut
 
-        $height++;  # up one to avoid this wrapper function.
-
         my $saw_uplevel = 0;
-        # Yes, we need a C style for loop here since $height changes
-        for( my $up = 1;  $up <= $height + 1;  $up++ ) {
-            my @caller = CORE::caller($up);
+        my $adjust = 0;
+
+        # walk up the call stack to fight the right package level to return;
+        # look one higher than requested for each call to uplevel found
+        # and adjust by the amount found in the Up_Frames stack for that call
+
+        for ( my $up = 0; $up <= $height + $adjust; $up++ ) {
+            my @caller = CORE::caller($up + 1); 
             if( defined $caller[0] && $caller[0] eq __PACKAGE__ ) {
-                $height++;
-                $height += $Up_Frames unless $saw_uplevel;
-                $saw_uplevel = 1;
+                # add one for each uplevel call seen
+                # and look into the uplevel stack for the offset
+                $adjust += 1 + $Up_Frames[$saw_uplevel];
+                $saw_uplevel++;
             }
         }
-                
 
-        return undef if $height < 0;
-        my @caller = CORE::caller($height);
+        my @caller = CORE::caller($height + $adjust + 1);
 
         if( wantarray ) {
             if( !@_ ) {
@@ -140,10 +170,9 @@ before or after Sub::Uplevel::uplevel().
         else {
             return $caller[0];
         }
-    };
+    }; # sub
 
 }
-
 
 =back
 

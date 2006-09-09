@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.11_01
+    - uplevel now keeps a proper stack of uplevel calls allowing
+      nesting of uplevel and non-uplevel calls
+
 0.10 Thu Apr 20 19:15:20 EDT 2006
     - Stopped warnings about "undefined" on Perl 5.8.8
     - DAGOLDEN added as co-maintainer
