@@ -1,10 +1,20 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Sub-Uplevel
-version:      0.12
-version_from: lib/Sub/Uplevel.pm
-installdirs:  site
+---
+name: Sub-Uplevel
+version: 0.12
+author:
+  - David A. Golden <dagolden@cpan.org>
+abstract: apparently run a function in a higher stack frame
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
 requires:
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+  Test::More: 0.47
+  perl: 5.006
+provides:
+  Sub::Uplevel:
+    file: lib/Sub/Uplevel.pm
+    version: 0.12
+generated_by: Module::Build version 0.28
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

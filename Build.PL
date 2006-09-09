@@ -8,7 +8,7 @@ Module::Build->new(
     create_readme       => 1,
     create_makefile_pl  => 'traditional',
     requires        => {
-        perl => 5.006
+        perl => 5.006,
         Test::More => 0.47,
     },
 )->create_build_script;

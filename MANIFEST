@@ -3,6 +3,7 @@ Changes
 lib/Sub/Uplevel.pm
 Makefile.PL
 MANIFEST
+MANIFEST.SKIP
 META.yml			Module meta-data (added by MakeMaker)
 t/die_check.t
 t/lib/Foo.pm
@@ -11,3 +12,4 @@ t/lib/Test/Simple.pm
 t/lib/Test/Utils.pm
 t/nested-uplevels.t
 t/Uplevel.t
+README

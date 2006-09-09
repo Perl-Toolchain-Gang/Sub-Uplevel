@@ -221,9 +221,9 @@ Thanks to Brent Welch, Damian Conway and Robin Houston.
 
 =head1 AUTHORS
 
-Michael G Schwern E<lt>schwern@pobox.comE<gt>
+David A Golden E<lt>dagolden@cpan.orgE<gt> (current maintainer)
 
-David A Golden E<lt>dagolden@cpan.orgE<gt>
+Michael G Schwern E<lt>schwern@pobox.comE<gt> (original author)
 
 =head1 LICENSE
 
