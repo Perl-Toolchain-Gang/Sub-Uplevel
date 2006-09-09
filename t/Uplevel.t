@@ -124,8 +124,8 @@ sub caller_check {
     return caller(shift);
 }
 
-ok( eq_array([caller_check(0)], 
-             ['main', $0, 122, 'main::caller_check', (caller_check(0))[4..9]]),
+is_deeply(   [ ( caller_check(0), 0, 4 )[0 .. 3] ], 
+             ['main', $0, 122, 'main::caller_check' ],
     'caller check' );
 
 sub deep_caller {
@@ -136,27 +136,24 @@ sub check_deep_caller {
     deep_caller();
 }
 
-ok( eq_array([(check_deep_caller)[0..2]], ['main', $0, 134]), 
-                                                         'shallow caller' );
-
-
+#line 134
+is_deeply([(check_deep_caller)[0..2]], ['main', $0, 134], 'shallow caller' );
 
 sub deeper { deep_caller() }        # caller 0
-sub still_deeper { deeper() }       # caller 1
+sub still_deeper { deeper() }       # caller 1 -- should give this line, 137
 sub ever_deeper  { still_deeper }   # caller 2
 
-ok( eq_array([(ever_deeper)[0..2]], ['main', $0, 140]), 'deep caller()' );
+is_deeply([(ever_deeper)[0..2]], ['main', $0, 137], 'deep caller()' );
 
 # This uplevel() should not effect deep_caller's caller(1).
 sub yet_deeper { uplevel( 1, \&ever_deeper) }
-ok( eq_array([(yet_deeper)[0..2]],  ['main', $0, 140]),  
-                                                 'deep caller() + uplevel' );
+is_deeply([(yet_deeper)[0..2]],  ['main', $0, 137],  'deep caller() + uplevel' );
 
 sub target { caller }
 sub yarrow { uplevel( 1, \&target ) }
 sub hock   { uplevel( 1, \&yarrow ) }
 
-ok( eq_array([(hock)], ['main', $0, 154]),  'nested uplevel()s' );
+is_deeply([(hock)], ['main', $0, 150],  'nested uplevel()s' );
 
 # Deep caller inside uplevel
 package Delegator; 
