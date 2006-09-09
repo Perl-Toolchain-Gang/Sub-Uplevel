@@ -5,6 +5,8 @@
 # Saavik: As I indicated, Admiral, that thought had not occurred to me.  
 # Kirk:   Well, now you have something new to think about. Carry on. 
  
+# XXX DG: Why is this test here?  Seems pointless.  Oh, well.
+
 use lib qw(t/lib);
 use Test::More tests => 1;
 
