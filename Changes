@@ -1,3 +1,9 @@
+Changes for Sub::Uplevel
+
+0.10 in progress
+    - Stopped warnings about "undefined" on Perl 5.8.8
+    - DAGOLDEN added as co-maintainer
+
 0.09  Wed Jul  7 14:52:08 EDT 2004
     - Ok, ok.  I'll put a license on this.
 

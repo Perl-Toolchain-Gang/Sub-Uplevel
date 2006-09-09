@@ -4,7 +4,7 @@ use 5.006;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = 0.09;
+$VERSION = 0.10;
 
 # We have to do this so the CORE::GLOBAL versions override the builtins
 _setup_CORE_GLOBAL();
@@ -120,7 +120,7 @@ before or after Sub::Uplevel::uplevel().
         # Yes, we need a C style for loop here since $height changes
         for( my $up = 1;  $up <= $height + 1;  $up++ ) {
             my @caller = CORE::caller($up);
-            if( $caller[0] eq __PACKAGE__ ) {
+            if( defined $caller[0] && $caller[0] eq __PACKAGE__ ) {
                 $height++;
                 $height += $Up_Frames unless $saw_uplevel;
                 $saw_uplevel = 1;
@@ -190,14 +190,16 @@ dinner table.
 Thanks to Brent Welch, Damian Conway and Robin Houston.
 
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+David Golden E<lt>dagolden@cpan.orgE<gt>
 
 Michael G Schwern E<lt>schwern@pobox.comE<gt>
 
 
 =head1 LICENSE
 
-Copyright by Michael G Schwern
+Copyright by Michael G Schwern, David A Golden
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
