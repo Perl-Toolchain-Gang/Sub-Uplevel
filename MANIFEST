@@ -1,3 +1,4 @@
+Build.PL
 Changes
 lib/Sub/Uplevel.pm
 Makefile.PL
@@ -10,4 +11,3 @@ t/lib/Test/Simple.pm
 t/lib/Test/Utils.pm
 t/nested-uplevels.t
 t/Uplevel.t
-SIGNATURE                                Public-key signature (added by MakeMaker)

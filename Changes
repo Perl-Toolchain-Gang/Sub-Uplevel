@@ -1,5 +1,10 @@
 Changes for Sub::Uplevel
 
+0.12 Fri May 12 18:33:40 EDT 2006
+    - added Build.PL and switched to boilerplate generated Makefile.PL
+    - removed SIGNATURE due to recently discovered Module::Signature
+      issues with newline handling and sub-key compatible keyservers
+
 0.11_01 Fri Apr 21 00:49:51 EDT 2006
     - uplevel now keeps a proper stack of uplevel calls allowing
       nesting of uplevel and non-uplevel calls
