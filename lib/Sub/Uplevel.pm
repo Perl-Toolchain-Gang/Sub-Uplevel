@@ -4,7 +4,7 @@ use 5.006;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = 0.10;
+$VERSION = "0.10";
 
 # We have to do this so the CORE::GLOBAL versions override the builtins
 _setup_CORE_GLOBAL();
@@ -192,10 +192,9 @@ Thanks to Brent Welch, Damian Conway and Robin Houston.
 
 =head1 AUTHORS
 
-David Golden E<lt>dagolden@cpan.orgE<gt>
-
 Michael G Schwern E<lt>schwern@pobox.comE<gt>
 
+David A Golden E<lt>dagolden@cpan.orgE<gt>
 
 =head1 LICENSE
 
