@@ -1,7 +1,12 @@
 Changes for Sub::Uplevel
 
 0.13 in progress
-    - fixed bug in Uplevel.t that caused test failures on FreeBSD for 5.8.0
+    - fixed bug in Uplevel.t that caused test failure on FreeBSD for 5.8.0
+    - fixed bug in Uplevel.t that caused test failure on bleadperl-5.9.4
+    - removed ancient Test::More provided in t/lib
+    - switched ok(eq_array()) tests to is_deeper() for better diagnostics
+    - added pod/pod coverage checks
+    - numbered tests
 
 0.12 Fri May 12 18:33:40 EDT 2006
     - official release of the uplevel stack patch (fixes RT#13893)

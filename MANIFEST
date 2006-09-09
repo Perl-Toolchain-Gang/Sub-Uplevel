@@ -5,11 +5,10 @@ Makefile.PL
 MANIFEST
 MANIFEST.SKIP
 META.yml			Module meta-data (added by MakeMaker)
-t/die_check.t
-t/lib/Foo.pm
-t/lib/Test/More.pm
-t/lib/Test/Simple.pm
-t/lib/Test/Utils.pm
-t/nested-uplevels.t
-t/Uplevel.t
 README
+t/01_die_check.t
+t/02_uplevel.t
+t/03_nested_uplevels.t
+t/98_pod.t
+t/99_pod_coverage.t
+t/lib/Foo.pm
