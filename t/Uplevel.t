@@ -68,7 +68,7 @@ sub try_croak {
 
 sub wrap_croak {
 # line 68
-    uplevel 1, \&try_croak;
+    uplevel(1, \&try_croak);
 }
 
 
@@ -148,13 +148,13 @@ sub ever_deeper  { still_deeper }   # caller 2
 ok( eq_array([(ever_deeper)[0..2]], ['main', $0, 140]), 'deep caller()' );
 
 # This uplevel() should not effect deep_caller's caller(1).
-sub yet_deeper { uplevel 1, \&ever_deeper }
+sub yet_deeper { uplevel( 1, \&ever_deeper) }
 ok( eq_array([(yet_deeper)[0..2]],  ['main', $0, 140]),  
                                                  'deep caller() + uplevel' );
 
 sub target { caller }
-sub yarrow { uplevel 1, \&target }
-sub hock   { uplevel 1, \&yarrow }
+sub yarrow { uplevel( 1, \&target ) }
+sub hock   { uplevel( 1, \&yarrow ) }
 
 ok( eq_array([(hock)], ['main', $0, 154]),  'nested uplevel()s' );
 
@@ -165,7 +165,7 @@ sub delegate { main::caller_check(shift) }
     
 package Wrapper;
 use Sub::Uplevel;
-sub wrap { uplevel 1, \&Delegator::delegate, @_ }
+sub wrap { uplevel( 1, \&Delegator::delegate, @_ ) }
 
 package main;
 

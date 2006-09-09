@@ -1,5 +1,8 @@
 Changes for Sub::Uplevel
 
+0.13 in progress
+    - fixed bug in Uplevel.t that caused test failures on FreeBSD for 5.8.0
+
 0.12 Fri May 12 18:33:40 EDT 2006
     - official release of the uplevel stack patch (fixes RT#13893)
     - added Build.PL and switched to boilerplate generated Makefile.PL
