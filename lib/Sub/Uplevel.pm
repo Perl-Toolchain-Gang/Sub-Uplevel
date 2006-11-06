@@ -4,7 +4,7 @@ use 5.006;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = "0.13";
+$VERSION = "0.14";
 
 # We have to do this so the CORE::GLOBAL versions override the builtins
 _setup_CORE_GLOBAL();

@@ -11,7 +11,6 @@ eval "use Pod::Coverage $min_pc";
 plan skip_all => "Pod::Coverage $min_pc required for testing POD coverage"
     if $@;
 
-plan tests => 1;
-pod_coverage_ok( "Pod::WikiDoc" );
+all_pod_coverage_ok();
 __END__
 use Test::Pod::Coverage; # Force CPANTS

@@ -1,5 +1,6 @@
 Build.PL
 Changes
+examples/uplevel-demo.pl
 lib/Sub/Uplevel.pm
 Makefile.PL
 MANIFEST

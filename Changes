@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.14 Sun Nov  5 23:38:46 EST 2006
+    - fixed t/99_pod_coverage.t bug
+    - added examples directory
+
 0.13 Thu Jun 22 19:47:26 EDT 2006
     - fixed bug in Uplevel.t that caused test failure on FreeBSD for 5.8.0
     - fixed bug in Uplevel.t that caused test failure on bleadperl-5.9.4
