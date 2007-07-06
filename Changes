@@ -1,5 +1,11 @@
 Changes for Sub::Uplevel
 
+0.15_01 Thu Jul  5 22:54:08 EDT 2007
+    - Won't override any existing CORE::GLOBAL::caller when loaded 
+    - Localize global caller() override to the scope of the uplevel() call 
+      so it can play nicer with things like Contextual::Return and
+      Hook::LexWrap that also override caller()
+
 0.14 Sun Nov  5 23:38:46 EST 2006
     - fixed t/99_pod_coverage.t bug
     - added examples directory

@@ -66,14 +66,16 @@ EXAMPLE
     If this code frightens you you should not use this module.
 
 BUGS and CAVEATS
-    Sub::Uplevel must be used as early as possible in your program's
-    compilation.
-
     Well, the bad news is uplevel() is about 5 times slower than a normal
     function call. XS implementation anyone?
 
-    Blows over any CORE::GLOBAL::caller you might have (and if you do,
-    you're just sick).
+    Sub::Uplevel overrides CORE::GLOBAL::caller temporarily for the scope of
+    each uplevel call. It does its best to work with any previously existing
+    CORE::GLOBAL::caller (both when Sub::Uplevel is first loaded and within
+    each uplevel call) such as from Contextual::Return or Hook::LexWrap.
+
+    However, if you are routinely using multiple modules that override
+    CORE::GLOBAL::caller, you are probably asking for trouble.
 
 HISTORY
     Those who do not learn from HISTORY are doomed to repeat it.
@@ -90,7 +92,8 @@ AUTHORS
     Michael G Schwern <schwern@pobox.com> (original author)
 
 LICENSE
-    Copyright by Michael G Schwern, David A Golden
+    Original code Copyright (c) 2001 to 2007 by Michael G Schwern.
+    Additional code Copyright (c) 2006 to 2007 by David A Golden.
 
     This program is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.

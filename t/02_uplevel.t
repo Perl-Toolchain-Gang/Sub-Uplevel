@@ -2,7 +2,7 @@
 
 use lib qw(t/lib);
 use strict;
-use Test::More tests => 20;
+use Test::More tests => 22;
 
 BEGIN { use_ok('Sub::Uplevel'); }
 can_ok('Sub::Uplevel', 'uplevel');
@@ -128,6 +128,22 @@ is_deeply(   [ ( caller_check(0), 0, 4 )[0 .. 3] ],
              ['main', $0, 122, 'main::caller_check' ],
     'caller check' );
 
+is( (() = caller_check(0)), (() = core_caller_check(0)) ,
+    "caller() with args returns right number of values"
+);
+
+sub core_caller_no_args {
+    return CORE::caller();
+}
+
+sub caller_no_args {
+    return caller();
+}
+
+is( (() = caller_no_args()), (() = core_caller_no_args()),
+    "caller() with no args returns right number of values"
+);
+
 sub deep_caller {
     return caller(1);
 }
@@ -141,7 +157,7 @@ is_deeply([(check_deep_caller)[0..2]], ['main', $0, 134], 'shallow caller' );
 
 sub deeper { deep_caller() }        # caller 0
 sub still_deeper { deeper() }       # caller 1 -- should give this line, 137
-sub ever_deeper  { still_deeper }   # caller 2
+sub ever_deeper  { still_deeper() } # caller 2
 
 is_deeply([(ever_deeper)[0..2]], ['main', $0, 137], 'deep caller()' );
 

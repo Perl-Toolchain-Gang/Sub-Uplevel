@@ -4,10 +4,14 @@ use 5.006;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = "0.14";
+$VERSION = "0.15_01";
 
-# We have to do this so the CORE::GLOBAL versions override the builtins
-_setup_CORE_GLOBAL();
+# We must override *CORE::GLOBAL::caller if it hasn't already been 
+# overridden or else Perl won't see our local override later.
+
+if ( not defined *CORE::GLOBAL::caller{CODE} ) {
+    *CORE::GLOBAL::caller = \&_normal_caller;
+}
 
 require Exporter;
 @ISA = qw(Exporter);
@@ -73,24 +77,40 @@ you can do this:
 =cut
 
 our @Up_Frames; # uplevel stack
+our $Caller_Proxy; # whatever caller() override was in effect before uplevel
 
 sub uplevel {
     my($num_frames, $func, @args) = @_;
     
     local @Up_Frames = ($num_frames, @Up_Frames );
+    
+    no warnings 'redefine';
+    # Update the caller proxy if the uplevel override isn't in effect
+    local $Caller_Proxy = *CORE::GLOBAL::caller{CODE}
+        if *CORE::GLOBAL::caller{CODE} != \&_uplevel_caller;
+    local *CORE::GLOBAL::caller = \&_uplevel_caller;
+
     return $func->(@args);
 }
 
+sub _normal_caller (;$) {
+    my $height = $_[0];
+    $height++;
+    if( wantarray and !@_ ) {
+        return (CORE::caller($height))[0..2];
+    }
+    else {
+        return CORE::caller($height);
+    }
+}
 
-sub _setup_CORE_GLOBAL {
-    no warnings 'redefine';
+sub _uplevel_caller (;$) {
+    my $height = $_[0] || 0;
 
-    *CORE::GLOBAL::caller = sub(;$) {
-        my $height = $_[0] || 0;
-
-        # shortcut if no uplevels have been called
-        # always add +1 to CORE::caller to skip this function's caller
-        return CORE::caller( $height + 1 ) if ! @Up_Frames;
+    # shortcut if no uplevels have been called
+    # always add +1 to CORE::caller (proxy caller function)
+    # to skip this function's caller
+    return $Caller_Proxy->( $height + 1 ) if ! @Up_Frames;
 
 =begin _private
 
@@ -142,36 +162,39 @@ found during the search
         
 =cut
 
-        my $saw_uplevel = 0;
-        my $adjust = 0;
+    my $saw_uplevel = 0;
+    my $adjust = 0;
 
-        # walk up the call stack to fight the right package level to return;
-        # look one higher than requested for each call to uplevel found
-        # and adjust by the amount found in the Up_Frames stack for that call
+    # walk up the call stack to fight the right package level to return;
+    # look one higher than requested for each call to uplevel found
+    # and adjust by the amount found in the Up_Frames stack for that call.
+    # We *must* use CORE::caller here since we need the real stack not what 
+    # some other override says the stack looks like, just in case that other
+    # override breaks things in some horrible way
 
-        for ( my $up = 0; $up <= $height + $adjust; $up++ ) {
-            my @caller = CORE::caller($up + 1); 
-            if( defined $caller[0] && $caller[0] eq __PACKAGE__ ) {
-                # add one for each uplevel call seen
-                # and look into the uplevel stack for the offset
-                $adjust += 1 + $Up_Frames[$saw_uplevel];
-                $saw_uplevel++;
-            }
+    for ( my $up = 0; $up <= $height + $adjust; $up++ ) {
+        my @caller = CORE::caller($up + 1); 
+        if( defined $caller[0] && $caller[0] eq __PACKAGE__ ) {
+            # add one for each uplevel call seen
+            # and look into the uplevel stack for the offset
+            $adjust += 1 + $Up_Frames[$saw_uplevel];
+            $saw_uplevel++;
         }
+    }
 
-        my @caller = CORE::caller($height + $adjust + 1);
+    # For returning values, we pass through the call to the proxy caller
+    # function, just at a higher stack level
+    my @caller = $Caller_Proxy->($height + $adjust + 1);
 
-        if( wantarray ) {
-            if( !@_ ) {
-                @caller = @caller[0..2];
-            }
-            return @caller;
+    if( wantarray ) {
+        if( !@_ ) {
+            @caller = @caller[0..2];
         }
-        else {
-            return $caller[0];
-        }
-    }; # sub
-
+        return @caller;
+    }
+    else {
+        return $caller[0];
+    }
 }
 
 =back
@@ -196,15 +219,16 @@ If this code frightens you B<you should not use this module.>
 
 =head1 BUGS and CAVEATS
 
-Sub::Uplevel must be used as early as possible in your program's
-compilation.
-
 Well, the bad news is uplevel() is about 5 times slower than a normal
 function call.  XS implementation anyone?
 
-Blows over any CORE::GLOBAL::caller you might have (and if you do,
-you're just sick).
+Sub::Uplevel overrides CORE::GLOBAL::caller temporarily for the scope of
+each uplevel call.  It does its best to work with any previously existing
+CORE::GLOBAL::caller (both when Sub::Uplevel is first loaded and within 
+each uplevel call) such as from Contextual::Return or Hook::LexWrap.  
 
+However, if you are routinely using multiple modules that override 
+CORE::GLOBAL::caller, you are probably asking for trouble.
 
 =head1 HISTORY
 
@@ -213,11 +237,9 @@ Those who do not learn from HISTORY are doomed to repeat it.
 The lesson here is simple:  Don't sit next to a Tcl programmer at the
 dinner table.
 
-
 =head1 THANKS
 
 Thanks to Brent Welch, Damian Conway and Robin Houston.
-
 
 =head1 AUTHORS
 
@@ -227,13 +249,13 @@ Michael G Schwern E<lt>schwern@pobox.comE<gt> (original author)
 
 =head1 LICENSE
 
-Copyright by Michael G Schwern, David A Golden
+Original code Copyright (c) 2001 to 2007 by Michael G Schwern.
+Additional code Copyright (c) 2006 to 2007 by David A Golden.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 See http://www.perl.com/perl/misc/Artistic.html
-
 
 =head1 SEE ALSO
 
