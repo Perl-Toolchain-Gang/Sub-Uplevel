@@ -1,5 +1,8 @@
 Changes for Sub::Uplevel
 
+0.16 Mon Jul 30 09:54:41 EDT 2007
+    - release version of 0.15_01 changes
+
 0.15_01 Thu Jul  5 22:54:08 EDT 2007
     - Won't override any existing CORE::GLOBAL::caller when loaded 
     - Localize global caller() override to the scope of the uplevel() call 
