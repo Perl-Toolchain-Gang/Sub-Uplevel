@@ -1,10 +1,10 @@
 package Sub::Uplevel;
 
-use 5.006;
+#use 5.006;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = "0.16";
+$VERSION = '0.17_01';
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
@@ -76,19 +76,26 @@ you can do this:
 
 =cut
 
-our @Up_Frames; # uplevel stack
-our $Caller_Proxy; # whatever caller() override was in effect before uplevel
+use vars qw/@Up_Frames $Caller_Proxy/;
+# @Up_Frames -- uplevel stack
+# $Caller_Proxy -- whatever caller() override was in effect before uplevel
 
 sub uplevel {
     my($num_frames, $func, @args) = @_;
     
     local @Up_Frames = ($num_frames, @Up_Frames );
     
-    no warnings 'redefine';
+    # backwards compatible version of "no warnings 'redefine'"
+    my $old_W = $^W;
+    $^W = 0;
+
     # Update the caller proxy if the uplevel override isn't in effect
     local $Caller_Proxy = *CORE::GLOBAL::caller{CODE}
         if *CORE::GLOBAL::caller{CODE} != \&_uplevel_caller;
     local *CORE::GLOBAL::caller = \&_uplevel_caller;
+    
+    # restore old warnings state
+    $^W = $old_W;
 
     return $func->(@args);
 }

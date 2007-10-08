@@ -41,9 +41,12 @@ BEGIN {
         "Sub::Uplevel's normal caller override in place"
     );
 
-    no warnings 'redefine';
+    # old style no warnings 'redefine'
+    my $old_W = $^W;
+    $^W = 0;
         
     *CORE::GLOBAL::caller = \&_reverse_caller;
+    $^W = $old_W
 
 }
 

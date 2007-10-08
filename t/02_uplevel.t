@@ -72,14 +72,18 @@ sub wrap_croak {
 }
 
 
-my $croak_diag = $] <= 5.006 ? 'require 0' : 'eval {...}';
+# depending on perl version, we could get 'require 0' or 'eval {...}'
+# in the stack. This test used to be 'require 0' for <= 5.006, but
+# it broke on 5.005_05 test release, so we'll just take either
 # line 72
 eval { wrap_croak() };
-is( $@, <<CARP, 'croak() fooled');
+my $croak_regex = quotemeta( <<"CARP" );
 Now we can fool croak! at $0 line 64
 	main::wrap_croak() called at $0 line 72
-	$croak_diag called at $0 line 72
 CARP
+$croak_regex .= '\t(require 0|eval \{\.\.\.\})'
+                . quotemeta( " called at $0 line 72" );
+like( $@, "/$croak_regex/", 'croak() fooled');
 
 #line 79
 ok( !caller,                                "caller() not screwed up" );
