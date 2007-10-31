@@ -19,6 +19,10 @@ require Exporter;
 
 Sub::Uplevel - apparently run a function in a higher stack frame
 
+=head1 VERSION
+
+This documentation describes version 0.18
+
 =head1 SYNOPSIS
 
   use Sub::Uplevel;
