@@ -1,5 +1,8 @@
 Changes for Sub::Uplevel
 
+0.18 Wed Oct 31 06:56:13 EDT 2007
+    - release version of 0.17_01 changes
+
 0.17_01
     - removed 5.006-specific language and tested on prerelease 5.00505
 
