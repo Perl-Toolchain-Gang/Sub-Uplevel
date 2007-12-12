@@ -2,7 +2,7 @@ package Sub::Uplevel;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.18';
+$VERSION = '0.1801';
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
