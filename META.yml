@@ -1,6 +1,6 @@
 ---
 name: Sub-Uplevel
-version: 0.18
+version: 0.1801
 author:
   - 'David A. Golden <dagolden@cpan.org>'
 abstract: apparently run a function in a higher stack frame
@@ -12,7 +12,7 @@ requires:
 provides:
   Sub::Uplevel:
     file: lib/Sub/Uplevel.pm
-    version: 0.18
+    version: 0.1801
 generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
