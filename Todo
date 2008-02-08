@@ -1,0 +1,4 @@
+Todo for Sub::Uplevel
+#--------------------------------------------------------------------------#
+
+- warn if uplevel called for more than the apparent call stack height
