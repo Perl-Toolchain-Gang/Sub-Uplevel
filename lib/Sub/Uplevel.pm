@@ -2,7 +2,7 @@ package Sub::Uplevel;
 
 use strict;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.1801';
+$VERSION = '0.19';
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
@@ -105,11 +105,23 @@ sub uplevel {
 sub _normal_caller (;$) {
     my $height = $_[0];
     $height++;
-    if( wantarray and !@_ ) {
-        return (CORE::caller($height))[0..2];
+    if ( CORE::caller() eq 'DB' ) {
+        # passthrough the @DB::args trick
+        package DB;
+        if( wantarray and !@_ ) {
+            return (CORE::caller($height))[0..2];
+        }
+        else {
+            return CORE::caller($height);
+        }
     }
     else {
-        return CORE::caller($height);
+        if( wantarray and !@_ ) {
+            return (CORE::caller($height))[0..2];
+        }
+        else {
+            return CORE::caller($height);
+        }
     }
 }
 
@@ -193,7 +205,15 @@ found during the search
 
     # For returning values, we pass through the call to the proxy caller
     # function, just at a higher stack level
-    my @caller = $Caller_Proxy->($height + $adjust + 1);
+    my @caller;
+    if ( CORE::caller() eq 'DB' ) {
+        # passthrough the @DB::args trick
+        package DB;
+        @caller = $Sub::Uplevel::Caller_Proxy->($height + $adjust + 1);
+    }
+    else {
+        @caller = $Caller_Proxy->($height + $adjust + 1);
+    }
 
     if( wantarray ) {
         if( !@_ ) {

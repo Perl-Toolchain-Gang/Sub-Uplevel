@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.19
+    - bug fix: replacement caller() correctly sets @DB::args if calling
+      package is DB
+
 0.18 Wed Oct 31 06:56:13 EDT 2007
     - release version of 0.17_01 changes
 
