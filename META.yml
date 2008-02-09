@@ -1,6 +1,6 @@
 ---
 name: Sub-Uplevel
-version: 0.1801
+version: 0.19
 author:
   - 'David A. Golden <dagolden@cpan.org>'
 abstract: apparently run a function in a higher stack frame
@@ -8,12 +8,21 @@ license: perl
 resources:
   license: http://dev.perl.org/licenses/
 requires:
+  Exporter: 0
+build_requires:
+  Carp: 0
   Test::More: 0.47
 provides:
+  DB:
+    file: lib/Sub/Uplevel.pm
   Sub::Uplevel:
     file: lib/Sub/Uplevel.pm
-    version: 0.1801
-generated_by: Module::Build version 0.2808
+    version: 0.19
+generated_by: Module::Build version 0.280801
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2
+no_index:
+  directory:
+    - examples
+    - inc

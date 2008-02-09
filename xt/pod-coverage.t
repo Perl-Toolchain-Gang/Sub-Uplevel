@@ -1,5 +1,4 @@
 use Test::More;
-plan skip_all => "Skipping author tests" if not $ENV{AUTHOR_TESTING};
 
 my $min_tpc = 1.08;
 eval "use Test::Pod::Coverage $min_tpc";
@@ -11,6 +10,13 @@ eval "use Pod::Coverage $min_pc";
 plan skip_all => "Pod::Coverage $min_pc required for testing POD coverage"
     if $@;
 
-all_pod_coverage_ok();
-__END__
-use Test::Pod::Coverage; # Force CPANTS
+my @modules = all_modules('lib');
+
+plan tests => scalar @modules; 
+
+for my $mod ( @modules ) {
+    my $doc = "lib/$mod\.pod";
+    $doc =~ s{::}{/}g;
+    pod_coverage_ok( $mod, { pod_from => $doc } );
+}
+

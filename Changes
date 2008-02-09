@@ -1,8 +1,11 @@
 Changes for Sub::Uplevel
 
-0.19
+0.19 in progress
     - bug fix: replacement caller() correctly sets @DB::args if calling
       package is DB
+
+    - repackaging: custom Build.PL, moved all author tests to xt/, added
+      LICENSE and INSTALL files
 
 0.18 Wed Oct 31 06:56:13 EDT 2007
     - release version of 0.17_01 changes

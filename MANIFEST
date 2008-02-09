@@ -1,7 +1,11 @@
 Build.PL
 Changes
 examples/uplevel-demo.pl
+inc/Module/Build/WikiDoc.pm
+INSTALL
 lib/Sub/Uplevel.pm
+lib/Sub/Uplevel.pod
+LICENSE
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
@@ -13,7 +17,11 @@ t/03_nested_uplevels.t
 t/04_honor_later_override.t
 t/05_honor_prior_override.t
 t/06_db_args.t
-t/98_pod.t
-t/99_pod_coverage.t
 t/lib/Foo.pm
 Todo
+xt/critic.t
+xt/perlcriticrc
+xt/pod-coverage.t
+xt/pod.t
+xt/spelling.t
+xt/stopwords.txt
