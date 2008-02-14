@@ -165,7 +165,7 @@ Michael G Schwern E<lt>schwern@pobox.comE<gt> (original author)
 =head1 LICENSE
 
 Original code Copyright (c) 2001 to 2007 by Michael G Schwern.
-Additional code Copyright (c) 2006 to 2007 by David A Golden.
+Additional code Copyright (c) 2006 to 2008 by David A Golden.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

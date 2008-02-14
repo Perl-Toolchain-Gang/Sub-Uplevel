@@ -1,6 +1,7 @@
 Changes for Sub::Uplevel
 
-0.19 in progress
+0.19 Thu Feb 14 11:50:16 EST 2008
+
     - bug fix: replacement caller() correctly sets @DB::args if calling
       package is DB
 
