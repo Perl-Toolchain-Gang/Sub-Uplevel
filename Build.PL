@@ -19,6 +19,7 @@ $class->new(
     },
     meta_add            => { 
         no_index => { 
+            package => [ 'DB' ], 
             directory => [ qw{
                 examples
                 inc

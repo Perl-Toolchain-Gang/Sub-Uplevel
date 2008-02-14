@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.1901 Thu Feb 14 14:07:37 EST 2008
+
+    - hides the "DB" package from indexers (DB used to support @DB::args)
+    
 0.19 Thu Feb 14 11:50:16 EST 2008
 
     - bug fix: replacement caller() correctly sets @DB::args if calling
