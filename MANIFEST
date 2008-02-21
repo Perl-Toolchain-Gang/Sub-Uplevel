@@ -17,6 +17,7 @@ t/03_nested_uplevels.t
 t/04_honor_later_override.t
 t/05_honor_prior_override.t
 t/06_db_args.t
+t/07_uplevel_too_high.t
 t/lib/Foo.pm
 Todo
 xt/critic.t

@@ -14,7 +14,7 @@ use Test::More tests => 7;
 sub _reverse_caller(;$) { 
     my $height = $_[0];
     my @caller = CORE::caller(++$height);
-    $caller[0] = reverse $caller[0];
+    $caller[0] = defined $caller[0] ? reverse $caller[0] : undef;
     if( wantarray and !@_ ) {
         return @caller[0..2];
     }
@@ -68,8 +68,8 @@ sub test_caller_w_uplevel { return uplevel_caller }
 # Test for reversed package name both inside and outside an uplevel call
 #--------------------------------------------------------------------------#
 
-is( scalar caller(), '',
-    "caller from main package is empty string"
+is( scalar caller(), undef,
+    "caller from main package is undef"
 );
 
 is( test_caller(), reverse("main"),

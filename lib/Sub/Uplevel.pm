@@ -1,8 +1,11 @@
 package Sub::Uplevel;
 
 use strict;
+use Carp qw/carp/;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.1901';
+$VERSION = '0.19_02';
+$VERSION = eval $VERSION;
+
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
@@ -79,6 +82,8 @@ you can do this:
         return @out;
     }
 
+C<uplevel> will issue a warning if <$num_frames> is more than the current call
+stack depth.
 
 =cut
 
@@ -86,10 +91,17 @@ use vars qw/@Up_Frames $Caller_Proxy/;
 # @Up_Frames -- uplevel stack
 # $Caller_Proxy -- whatever caller() override was in effect before uplevel
 
+sub _apparent_stack_height {
+    my $height = 1; # start above this function 
+    while ( 1 ) {
+        last if ! defined scalar $Caller_Proxy->($height);
+        $height++;
+    }
+    return $height - 1; # subtract 1 for this function
+}
+
 sub uplevel {
     my($num_frames, $func, @args) = @_;
-    
-    local @Up_Frames = ($num_frames, @Up_Frames );
     
     # backwards compatible version of "no warnings 'redefine'"
     my $old_W = $^W;
@@ -103,6 +115,11 @@ sub uplevel {
     # restore old warnings state
     $^W = $old_W;
 
+    carp "uplevel $num_frames is more than the caller stack"
+        if $num_frames >= _apparent_stack_height();
+
+    local @Up_Frames = ($num_frames, @Up_Frames );
+    
     return $func->(@args);
 }
 
@@ -296,6 +313,5 @@ PadWalker (for the similar idea with lexicals), Hook::LexWrap,
 Tcl's uplevel() at http://www.scriptics.com/man/tcl8.4/TclCmd/uplevel.htm
 
 =cut
-
 
 1;

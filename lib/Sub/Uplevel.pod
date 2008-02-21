@@ -8,7 +8,7 @@ Sub::Uplevel - apparently run a function in a higher stack frame
 
 =head1 VERSION
 
-This documentation describes version 0.1901
+This documentation describes version 0.19_02
 
 
 =head1 SYNOPSIS
@@ -63,6 +63,8 @@ you can do this:
         return @out;
     }
 
+C<uplevel()> warns if <$num_frames> is more than the current call stack
+depth.
 
 =begin _private
 

@@ -2,7 +2,7 @@
 
 use lib qw(t/lib);
 use strict;
-use Test::More tests => 22;
+use Test::More tests => 23;
 
 BEGIN { use_ok('Sub::Uplevel'); }
 can_ok('Sub::Uplevel', 'uplevel');
@@ -68,7 +68,7 @@ sub try_croak {
 
 sub wrap_croak {
 # line 68
-    uplevel(1, \&try_croak);
+    uplevel(shift, \&try_croak);
 }
 
 
@@ -76,13 +76,22 @@ sub wrap_croak {
 # in the stack. This test used to be 'require 0' for <= 5.006, but
 # it broke on 5.005_05 test release, so we'll just take either
 # line 72
-eval { wrap_croak() };
+eval { wrap_croak(1) };
 my $croak_regex = quotemeta( <<"CARP" );
 Now we can fool croak! at $0 line 64
-	main::wrap_croak() called at $0 line 72
+	main::wrap_croak(1) called at $0 line 72
 CARP
 $croak_regex .= '\t(require 0|eval \{\.\.\.\})'
                 . quotemeta( " called at $0 line 72" );
+like( $@, "/$croak_regex/", 'croak() fooled');
+
+# Try to wrap higher -- this may have been a problem that was exposed on
+# Test Exception
+# line 75
+eval { wrap_croak(2) };
+$croak_regex = quotemeta( <<"CARP" );
+Now we can fool croak! at $0 line 64
+CARP
 like( $@, "/$croak_regex/", 'croak() fooled');
 
 #line 79
