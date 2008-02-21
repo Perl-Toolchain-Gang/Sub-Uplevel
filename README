@@ -52,8 +52,8 @@ DESCRIPTION
                 return @out;
             }
 
-        "uplevel()" warns if <$num_frames> is more than the current call
-        stack depth.
+        "uplevel" will issue a warning if $num_frames is more than the
+        current call stack depth.
 
 EXAMPLE
     The main reason I wrote this module is so I could write wrappers around

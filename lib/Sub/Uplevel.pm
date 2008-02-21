@@ -82,7 +82,7 @@ you can do this:
         return @out;
     }
 
-C<uplevel> will issue a warning if <$num_frames> is more than the current call
+C<uplevel> will issue a warning if C<$num_frames> is more than the current call
 stack depth.
 
 =cut
