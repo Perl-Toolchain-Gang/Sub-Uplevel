@@ -63,8 +63,8 @@ you can do this:
         return @out;
     }
 
-C<uplevel()> warns if <$num_frames> is more than the current call stack
-depth.
+C<uplevel> will issue a warning if C<$num_frames> is more than the current call
+stack depth.
 
 =begin _private
 
