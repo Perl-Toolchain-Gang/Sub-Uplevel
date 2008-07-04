@@ -1,16 +1,18 @@
 Changes for Sub::Uplevel
 
-0.19_03
+0.19_03 Fri Jul  4 13:31:21 EDT 2008
 
-    - in progress
+    - fixed: load Carp only as needed (fixes problem on 5.005)
 
 0.19_02 Thu Feb 21 14:58:46 EST 2008
 
-    - uplevel will warn if uplevel request is more than the call stack depth
+    - added: uplevel will warn if uplevel request is more than the call
+      stack depth
 
 0.1901 Thu Feb 14 14:07:37 EST 2008
 
-    - hides the "DB" package from indexers (DB used to support @DB::args)
+    - fixed: hides the "DB" package from indexers (DB used to support
+      @DB::args)
     
 0.19 Thu Feb 14 11:50:16 EST 2008
 
