@@ -2,15 +2,15 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-          'PL_FILES' => {},
-          'INSTALLDIRS' => 'site',
           'NAME' => 'Sub::Uplevel',
-          'EXE_FILES' => [],
           'VERSION_FROM' => 'lib/Sub/Uplevel.pm',
           'PREREQ_PM' => {
-                           'Test::More' => '0.47',
+                           'Carp' => 0,
                            'Exporter' => 0,
-                           'Carp' => 0
-                         }
+                           'Test::More' => '0.47'
+                         },
+          'INSTALLDIRS' => 'site',
+          'EXE_FILES' => [],
+          'PL_FILES' => {}
         )
 ;

@@ -3,7 +3,7 @@ package Sub::Uplevel;
 use strict;
 use Carp qw/carp/;
 use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.19_02';
+$VERSION = '0.19_03';
 $VERSION = eval $VERSION;
 
 
