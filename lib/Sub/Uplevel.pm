@@ -1,7 +1,6 @@
 package Sub::Uplevel;
 
 use strict;
-use Carp qw/carp/;
 use vars qw($VERSION @ISA @EXPORT);
 $VERSION = '0.19_03';
 $VERSION = eval $VERSION;
@@ -115,8 +114,10 @@ sub uplevel {
     # restore old warnings state
     $^W = $old_W;
 
-    carp "uplevel $num_frames is more than the caller stack"
-        if $num_frames >= _apparent_stack_height();
+    if ( $num_frames >= _apparent_stack_height() ) {
+      require Carp;
+      Carp::carp("uplevel $num_frames is more than the caller stack");
+    }
 
     local @Up_Frames = ($num_frames, @Up_Frames );
     
