@@ -3,6 +3,7 @@
 \bCVS\b
 ,v$
 .svn/
+^.git
 
 # ExtUtils::MakeMaker generated files and dirs.
 ^MANIFEST\.(?!SKIP)
