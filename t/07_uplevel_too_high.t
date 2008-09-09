@@ -10,7 +10,7 @@ sub show_caller {
 
 sub wrap_show_caller {
     my $uplevel = shift;
-    return uplevel $uplevel, \&show_caller;;
+    return uplevel $uplevel, \&show_caller;
 }
 
 my $warning = '';
@@ -22,5 +22,6 @@ is( $warning, '', "don't warn if ordinary uplevel" );
 
 $warning = '';
 $caller = wrap_show_caller(2);
+my $file = __FILE__;
 is($caller, undef, "wrapper returned correct caller");
-isnt( $warning, '', "warn if too much uplevel" );
+like( $warning, "/uplevel 2 is more than the caller stack at $file line \\d+/", "warn if too much uplevel" );
