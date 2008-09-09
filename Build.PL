@@ -1,3 +1,4 @@
+use 5.006;
 use strict;
 use lib 'inc';
 eval "require Pod::WikiDoc";
@@ -11,6 +12,7 @@ $class->new(
     create_readme       => 1,
     create_makefile_pl  => 'traditional',
     requires        => {
+        'perl' => 5.006,
         'Exporter' => 0,
     },
     build_requires => {

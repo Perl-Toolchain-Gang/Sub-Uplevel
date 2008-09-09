@@ -1,8 +1,8 @@
 package Sub::Uplevel;
 
+use 5.006;
 use strict;
-use vars qw($VERSION @ISA @EXPORT);
-$VERSION = '0.19_03';
+our $VERSION = '0.20';
 $VERSION = eval $VERSION;
 
 
@@ -14,8 +14,8 @@ if ( not defined *CORE::GLOBAL::caller{CODE} ) {
 }
 
 require Exporter;
-@ISA = qw(Exporter);
-@EXPORT = qw(uplevel);
+@Sub::Uplevel::ISA = qw(Exporter);
+@Sub::Uplevel::EXPORT = qw(uplevel);
 
 =head1 NAME
 
@@ -86,9 +86,9 @@ stack depth.
 
 =cut
 
-use vars qw/@Up_Frames $Caller_Proxy/;
 # @Up_Frames -- uplevel stack
 # $Caller_Proxy -- whatever caller() override was in effect before uplevel
+our (@Up_Frames, $Caller_Proxy);
 
 sub _apparent_stack_height {
     my $height = 1; # start above this function 

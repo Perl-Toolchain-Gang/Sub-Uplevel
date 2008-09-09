@@ -1,5 +1,10 @@
 Changes for Sub::Uplevel
 
+0.20 Tue Sep  9 19:23:35 EDT 2008
+
+    - changed: bumped perl requirement to 5.006 and stopped using vars
+      (fixes a test bug under Test::More > 0.80)
+
 0.19_03 Fri Jul  4 13:31:21 EDT 2008
 
     - fixed: load Carp only as needed (fixes problem on 5.005)
