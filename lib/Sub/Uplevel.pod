@@ -8,7 +8,7 @@ Sub::Uplevel - apparently run a function in a higher stack frame
 
 =head1 VERSION
 
-This documentation describes version 0.20
+This documentation describes version 0.2001
 
 
 =head1 SYNOPSIS

@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.2001 Tue Sep  9 22:22:40 EDT 2008
+
+    - test fix: changed prior override test to be more robust (SCHWERN)
+
 0.20 Tue Sep  9 19:23:35 EDT 2008
 
     - changed: bumped perl requirement to 5.006 and stopped using vars
