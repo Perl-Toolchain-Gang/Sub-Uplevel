@@ -5,6 +5,18 @@ use strict;
 our $VERSION = '0.2002';
 $VERSION = eval $VERSION;
 
+sub import {
+  no strict 'refs';
+  my ($class, @args) = @_;
+  for my $fcn ( @args ) {
+    if ( $fcn ne 'uplevel' ) {
+      die qq{"$fcn" is not exported by the $class module\n}
+    }
+  }
+  my $caller = caller(0);
+  *{"$caller\::uplevel"} = \&uplevel;
+  return;
+}
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
@@ -13,9 +25,6 @@ if ( not defined *CORE::GLOBAL::caller{CODE} ) {
     *CORE::GLOBAL::caller = \&_normal_caller;
 }
 
-require Exporter;
-@Sub::Uplevel::ISA = qw(Exporter);
-@Sub::Uplevel::EXPORT = qw(uplevel);
 
 =head1 NAME
 
@@ -280,6 +289,8 @@ each uplevel call) such as from Contextual::Return or Hook::LexWrap.
 
 However, if you are routinely using multiple modules that override 
 CORE::GLOBAL::caller, you are probably asking for trouble.
+
+As of version 0.20, Sub::Uplevel requires Perl 5.6 or greater.
 
 =head1 HISTORY
 

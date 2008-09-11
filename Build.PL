@@ -13,7 +13,6 @@ $class->new(
     create_makefile_pl  => 'traditional',
     requires        => {
         'perl' => 5.006,
-        'Exporter' => 0,
     },
     build_requires => {
         'Carp' => 0, 

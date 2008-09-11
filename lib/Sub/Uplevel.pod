@@ -147,6 +147,8 @@ each uplevel call) such as from Contextual::Return or Hook::LexWrap.
 However, if you are routinely using multiple modules that override 
 CORE::GLOBAL::caller, you are probably asking for trouble.
 
+As of version 0.20, Sub::Uplevel requires Perl 5.6 or greater.
+
 =head1 HISTORY
 
 Those who do not learn from HISTORY are doomed to repeat it.

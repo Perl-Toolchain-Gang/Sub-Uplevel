@@ -8,7 +8,6 @@ license: perl
 resources:
   license: http://dev.perl.org/licenses/
 requires:
-  Exporter: 0
   perl: 5.006
 build_requires:
   Carp: 0

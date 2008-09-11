@@ -1,5 +1,11 @@
 Changes for Sub::Uplevel
 
+0.2002 Thu Sep 11 14:33:09 EDT 2008
+
+    - changed: removed Exporter dependency
+
+    - test fix: fixed strange t/07_uplevel_too_high.t fail on Win32
+    
 0.2001 Tue Sep  9 22:22:40 EDT 2008
 
     - test fix: changed prior override test to be more robust (SCHWERN)
