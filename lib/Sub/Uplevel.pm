@@ -2,7 +2,7 @@ package Sub::Uplevel;
 
 use 5.006;
 use strict;
-our $VERSION = '0.2001';
+our $VERSION = '0.2002';
 $VERSION = eval $VERSION;
 
 
