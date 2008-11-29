@@ -1,8 +1,10 @@
 Changes for Sub::Uplevel
 
-0.21_02
+0.21_01 Sat Nov 29 15:24:49 EST 2008
 
-    - under development
+    - added: the ":aggressive" tag may be used to force reloading of 
+      Exporter, which often binds caller() prior to Sub::Uplevel's global
+      override
 
 0.2002 Thu Sep 11 14:33:09 EDT 2008
 
