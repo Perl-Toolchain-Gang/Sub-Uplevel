@@ -5,19 +5,6 @@ use strict;
 our $VERSION = '0.21_01';
 $VERSION = eval $VERSION;
 
-sub import {
-  no strict 'refs';
-  my ($class, @args) = @_;
-  for my $fcn ( @args ) {
-    if ( $fcn ne 'uplevel' ) {
-      die qq{"$fcn" is not exported by the $class module\n}
-    }
-  }
-  my $caller = caller(0);
-  *{"$caller\::uplevel"} = \&uplevel;
-  return;
-}
-
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
 
@@ -25,7 +12,37 @@ if ( not defined *CORE::GLOBAL::caller{CODE} ) {
     *CORE::GLOBAL::caller = \&_normal_caller;
 }
 
+# modules to force reload if ":aggressive" is specified
+my @reload_list = qw/Exporter Exporter::Heavy/;
 
+sub import {
+  no strict 'refs';
+  my ($class, @args) = @_;
+  for my $tag ( @args, 'uplevel' ) {
+    if ( $tag eq 'uplevel' ) {
+      my $caller = caller(0);
+      *{"$caller\::uplevel"} = \&uplevel;
+    }
+    elsif( $tag eq ':aggressive' ) {
+      _force_reload( @reload_list );
+    }
+    else {
+      die qq{"$tag" is not exported by the $class module\n}
+    }
+  }
+  return;
+}
+
+sub _force_reload {
+  no warnings 'redefine';
+  local $^W = 0;
+  for my $m ( @_ ) {
+    $m =~ s{::}{/}g;
+    $m .= ".pm";
+    require $m if delete $INC{$m};
+  }
+}
+  
 =head1 NAME
 
 Sub::Uplevel - apparently run a function in a higher stack frame
@@ -280,7 +297,8 @@ If this code frightens you B<you should not use this module.>
 =head1 BUGS and CAVEATS
 
 Well, the bad news is uplevel() is about 5 times slower than a normal
-function call.  XS implementation anyone?
+function call.  XS implementation anyone?  It also slows down every invocation
+of caller(), regardless of whether uplevel() is in effect.
 
 Sub::Uplevel overrides CORE::GLOBAL::caller temporarily for the scope of
 each uplevel call.  It does its best to work with any previously existing
@@ -289,6 +307,19 @@ each uplevel call) such as from Contextual::Return or Hook::LexWrap.
 
 However, if you are routinely using multiple modules that override 
 CORE::GLOBAL::caller, you are probably asking for trouble.
+
+You B<should> load Sub::Uplevel as early as possible within your program.  As
+with all CORE::GLOBAL overloading, the overload will not affect modules that
+have already been compiled prior to the overload.  One module that often is
+unavoidably loaded prior to Sub::Uplevel is Exporter.  To forceably recompile
+Exporter (and Exporter::Heavy) after loading Sub::Uplevel, use it with the
+":aggressive" tag:
+
+    use Sub::Uplevel qw/:aggressive/;
+
+The private function C<Sub::Uplevel::_force_reload()> may be passed a list of
+additional modules to reload if ":aggressive" is not aggressive enough.  
+Reloading modules may break things, so only use this as a last resort.
 
 As of version 0.20, Sub::Uplevel requires Perl 5.6 or greater.
 
