@@ -25,7 +25,12 @@ $class->new(
                 examples
                 inc
             }],
-        } 
+        },
+    },
+    meta_merge          => {
+        resources => {
+            repository => 'http://github.com/dagolden/sub-uplevel',
+        },
     },
 )->create_build_script;
 
