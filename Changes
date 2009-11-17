@@ -1,5 +1,9 @@
 Changes for Sub::Uplevel
 
+0.22 Tue Nov 17 05:38:42 EST 2009
+
+    - meta: added repository to metadata [Alexandr Ciornii]
+
 0.21_01 Sat Nov 29 15:24:49 EST 2008
 
     - added: the ":aggressive" tag may be used to force reloading of 
