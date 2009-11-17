@@ -2,7 +2,7 @@ package Sub::Uplevel;
 
 use 5.006;
 use strict;
-our $VERSION = '0.21_01';
+our $VERSION = '0.22';
 $VERSION = eval $VERSION;
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 

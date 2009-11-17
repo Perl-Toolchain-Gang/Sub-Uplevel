@@ -2,7 +2,7 @@ NAME
     Sub::Uplevel - apparently run a function in a higher stack frame
 
 VERSION
-    This documentation describes version 0.21_01
+    This documentation describes version 0.22
 
 SYNOPSIS
       use Sub::Uplevel;
@@ -33,7 +33,7 @@ DESCRIPTION
         caller($frames) it will actually give caller($frames + $num_frames)
         for them.
 
-        "uplevel(1, \&some_func, @_)" is effectively "goto &some_func" but
+        `uplevel(1, \&some_func, @_)' is effectively `goto &some_func' but
         you don't immediately exit the current subroutine. So while you
         can't do this:
 
@@ -52,7 +52,7 @@ DESCRIPTION
                 return @out;
             }
 
-        "uplevel" will issue a warning if $num_frames is more than the
+        `uplevel' will issue a warning if `$num_frames' is more than the
         current call stack depth.
 
 EXAMPLE
@@ -93,7 +93,7 @@ BUGS and CAVEATS
 
         use Sub::Uplevel qw/:aggressive/;
 
-    The private function "Sub::Uplevel::_force_reload()" may be passed a
+    The private function `Sub::Uplevel::_force_reload()' may be passed a
     list of additional modules to reload if ":aggressive" is not aggressive
     enough. Reloading modules may break things, so only use this as a last
     resort.
