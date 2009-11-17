@@ -16,6 +16,7 @@
 # Module::Build
 ^Build$
 ^_build
+^MYMETA
 
 # Temp, old, vi and emacs files.
 ~$
