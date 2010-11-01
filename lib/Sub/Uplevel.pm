@@ -1,9 +1,8 @@
 package Sub::Uplevel;
+# ABSTRACT: apparently run a function in a higher stack frame
 
 use 5.006;
 use strict;
-our $VERSION = '0.23';
-$VERSION = eval $VERSION;
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
@@ -43,18 +42,6 @@ sub _force_reload {
   }
 }
   
-=head1 NAME
-
-Sub::Uplevel - apparently run a function in a higher stack frame
-
-=begin wikidoc
-
-= VERSION
-
-This documentation describes version %%VERSION%%
-
-=end wikidoc
-
 =head1 SYNOPSIS
 
   use Sub::Uplevel;
@@ -156,7 +143,8 @@ sub _normal_caller (;$) { ## no critic Prototypes
     my @caller;
     if ( CORE::caller() eq 'DB' ) {
         # passthrough the @DB::args trick
-        package DB;
+        package
+          DB;
         @caller = CORE::caller($height);
     }
     else {
@@ -259,7 +247,8 @@ found during the search
     my @caller;
     if ( CORE::caller() eq 'DB' ) {
         # passthrough the @DB::args trick
-        package DB;
+        package
+          DB;
         @caller = $Sub::Uplevel::Caller_Proxy->($height + $adjust + 1);
     }
     else {
@@ -338,20 +327,6 @@ dinner table.
 =head1 THANKS
 
 Thanks to Brent Welch, Damian Conway and Robin Houston.
-
-=head1 AUTHORS
-
-David A Golden E<lt>dagolden@cpan.orgE<gt> (current maintainer)
-
-Michael G Schwern E<lt>schwern@pobox.comE<gt> (original author)
-
-=head1 LICENSE
-
-Original code Copyright (c) 2001 to 2007 by Michael G Schwern.
-Additional code Copyright (c) 2006 to 2008 by David A Golden.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
 
 See http://www.perl.com/perl/misc/Artistic.html
 

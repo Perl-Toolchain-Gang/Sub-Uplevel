@@ -2,7 +2,7 @@
 
 use lib qw(t/lib);
 use strict;
-use Test::More tests => 23;
+use Test::More 0.47 tests => 23;
 
 BEGIN { use_ok('Sub::Uplevel'); }
 can_ok('Sub::Uplevel', 'uplevel');

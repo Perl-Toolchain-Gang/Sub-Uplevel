@@ -8,7 +8,7 @@
 # XXX DG: Why is this test here?  Seems pointless.  Oh, well.
 
 use lib qw(t/lib);
-use Test::More tests => 1;
+use Test::More 0.47 tests => 1;
 
 #line 12
 eval { die };
