@@ -2,7 +2,7 @@ package Sub::Uplevel;
 
 use 5.006;
 use strict;
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 $VERSION = eval $VERSION;
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
@@ -151,25 +151,28 @@ sub uplevel {
 }
 
 sub _normal_caller (;$) { ## no critic Prototypes
-    my $height = $_[0];
+    my ($height) = @_;
     $height++;
+    my @caller;
     if ( CORE::caller() eq 'DB' ) {
         # passthrough the @DB::args trick
         package DB;
-        if( wantarray and !@_ ) {
-            return (CORE::caller($height))[0..2];
-        }
-        else {
-            return CORE::caller($height);
-        }
+        @caller = CORE::caller($height);
     }
     else {
-        if( wantarray and !@_ ) {
-            return (CORE::caller($height))[0..2];
+        @caller = CORE::caller($height);
+    }
+
+    return if ! @caller;
+
+    if ( wantarray ) {
+        if( ! @_ ) {
+            @caller = @caller[0..2];
         }
-        else {
-            return CORE::caller($height);
-        }
+        return @caller;
+    }
+    else {
+        return $caller[0];
     }
 }
 
@@ -263,8 +266,10 @@ found during the search
         @caller = $Caller_Proxy->($height + $adjust + 1);
     }
 
-    if( wantarray ) {
-        if( !@_ ) {
+    return if ! @caller;
+
+    if ( wantarray ) {
+        if( ! @_ ) {
             @caller = @caller[0..2];
         }
         return @caller;
