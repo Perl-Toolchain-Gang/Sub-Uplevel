@@ -1,5 +1,6 @@
 package Sub::Uplevel;
 # ABSTRACT: apparently run a function in a higher stack frame
+# VERSION
 
 use 5.006;
 use strict;
