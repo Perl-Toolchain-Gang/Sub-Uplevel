@@ -22,8 +22,7 @@
          "corpus"
       ],
       "package" : [
-         "DB",
-         "t::lib"
+         "DB"
       ]
    },
    "prereqs" : {
@@ -53,10 +52,10 @@
    "provides" : {
       "Sub::Uplevel" : {
          "file" : "lib/Sub/Uplevel.pm",
-         "version" : "0.23"
+         "version" : "0.23_01"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-sub-uplevel at rt.cpan.org",
@@ -69,6 +68,6 @@
          "web" : "https://github.com/dagolden/sub-uplevel"
       }
    },
-   "version" : "0.23"
+   "version" : "0.23_01"
 }
 
