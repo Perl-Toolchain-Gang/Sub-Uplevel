@@ -149,9 +149,7 @@ sub _apparent_stack_height {
 }
 
 sub uplevel {
-    my($num_frames, $func, @args) = @_;
-    
-    # backwards compatible version of "no warnings 'redefine'"
+    # Backwards compatible version of "no warnings 'redefine'"
     my $old_W = $^W;
     $^W = 0;
 
@@ -159,25 +157,26 @@ sub uplevel {
     local $Caller_Proxy = *CORE::GLOBAL::caller{CODE}
         if *CORE::GLOBAL::caller{CODE} != \&_uplevel_caller;
     local *CORE::GLOBAL::caller = \&_uplevel_caller;
-    
-    # restore old warnings state
+
+    # Restore old warnings state
     $^W = $old_W;
 
-    if ( CHECK_FRAMES and $num_frames >= _apparent_stack_height() ) {
+    if ( CHECK_FRAMES and $_[0] >= _apparent_stack_height() ) {
       require Carp;
-      Carp::carp("uplevel $num_frames is more than the caller stack");
+      Carp::carp("uplevel $_[0] is more than the caller stack");
     }
 
-    local @Up_Frames = ($num_frames, @Up_Frames );
-    
-    return $func->(@args);
+    local @Up_Frames = (shift, @Up_Frames );
+
+    my $function = shift;
+    return $function->(@_);
 }
 
 sub _normal_caller (;$) { ## no critic Prototypes
     my $height = $_[0];
     $height++;
     if ( CORE::caller() eq 'DB' ) {
-        # passthrough the @DB::args trick
+        # Passthrough the @DB::args trick
         package DB;
         if( wantarray and !@_ ) {
             return (CORE::caller($height))[0..2];
