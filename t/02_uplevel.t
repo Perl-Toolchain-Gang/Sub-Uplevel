@@ -1,8 +1,11 @@
-#!/usr/bin/perl -Tw
+#!/usr/bin/perl
 
-use lib qw(t/lib);
 use strict;
-use Test::More 0.47 tests => 23;
+BEGIN {
+	$^W = 1;
+}
+
+use Test::More tests => 23;
 
 BEGIN { use_ok('Sub::Uplevel'); }
 can_ok('Sub::Uplevel', 'uplevel');
@@ -125,7 +128,7 @@ HA!  Even carp is fooled! at $0 line 88
 CARP
 
 
-use Foo;
+use t::lib::Foo;
 can_ok( 'main', 'fooble' );
 
 #line 114

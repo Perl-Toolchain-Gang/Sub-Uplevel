@@ -1,5 +1,10 @@
-use lib qw(t/lib);
+#!/usr/bin/perl
+
 use strict;
+BEGIN {
+    $^W = 1;
+}
+
 use Test::More;
 
 plan tests => 1;
@@ -8,8 +13,8 @@ plan tests => 1;
 # import() function
 
 package main;
-require Importer;
-require Bar;
-Importer::import_for_me('Bar','func3');
+require t::lib::Importer;
+require t::lib::Bar;
+t::lib::Importer::import_for_me('t::lib::Bar','func3');
 can_ok('main','func3');
 

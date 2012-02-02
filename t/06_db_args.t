@@ -1,5 +1,10 @@
-use lib qw(t/lib);
+#!/usr/bin/perl
+
 use strict;
+BEGIN {
+    $^W = 1;
+}
+
 use Test::More tests => 3;
 
 BEGIN { use_ok('Sub::Uplevel'); }

@@ -1,4 +1,4 @@
-package Bar;
+package t::lib::Bar;
 use warnings;
 use strict;
 require Exporter;

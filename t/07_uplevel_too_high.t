@@ -1,8 +1,16 @@
-use lib qw(t/lib);
+#!/usr/bin/perl
+
 use strict;
+BEGIN {
+    $^W = 1;
+}
+
 use Test::More tests => 5;
 
-BEGIN { use_ok('Sub::Uplevel'); }
+BEGIN {
+    $Sub::Uplevel::CHECK_FRAMES = 1;
+    use_ok('Sub::Uplevel');
+}
 
 sub show_caller {
     return scalar caller;
