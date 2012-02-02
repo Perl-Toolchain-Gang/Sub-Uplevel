@@ -2,6 +2,8 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
+0.23_01   2012-02-02 10:41:31 EST5EDT
+
     - added: the $Sub::Uplevel::CHECK_FRAMES global constant to enable the
       frame depth checking and compile it out if not needed.  [Adam
       Kennedy]
