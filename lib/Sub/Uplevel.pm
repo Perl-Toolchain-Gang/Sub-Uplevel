@@ -178,21 +178,15 @@ sub _normal_caller (;$) { ## no critic Prototypes
     if ( CORE::caller() eq 'DB' ) {
         # Passthrough the @DB::args trick
         package DB;
-        if( wantarray and !@_ ) {
+        if ( wantarray and ! @_ ) {
             return (CORE::caller($height))[0..2];
         }
-        else {
-            return CORE::caller($height);
-        }
+        return CORE::caller($height);
     }
-    else {
-        if( wantarray and !@_ ) {
-            return (CORE::caller($height))[0..2];
-        }
-        else {
-            return CORE::caller($height);
-        }
+    if ( wantarray and ! @_ ) {
+        return (CORE::caller($height))[0..2];
     }
+    return CORE::caller($height);
 }
 
 sub _uplevel_caller (;$) { ## no critic Prototypes
@@ -250,7 +244,7 @@ in the call stack, i.e. the requested height plus any uplevel adjustments
 found during the search
 
 =end _dagolden
-        
+
 =cut
 
     my $saw_uplevel = 0;
@@ -285,15 +279,9 @@ found during the search
         @caller = $Caller_Proxy->($height + $adjust + 1);
     }
 
-    if( wantarray ) {
-        if( !@_ ) {
-            @caller = @caller[0..2];
-        }
-        return @caller;
-    }
-    else {
-        return $caller[0];
-    }
+    return $caller[0] if ! wantarray;
+    @caller = @caller[0..2] if ! @_;
+    return @caller;
 }
 
 =back
