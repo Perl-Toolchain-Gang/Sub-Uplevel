@@ -22,7 +22,8 @@
          "corpus"
       ],
       "package" : [
-         "DB"
+         "DB",
+         "t::lib"
       ]
    },
    "prereqs" : {
@@ -45,10 +46,7 @@
             "Exporter" : 0,
             "File::Find" : 0,
             "File::Temp" : 0,
-            "Test::More" : 0,
-            "t::lib::Bar" : 0,
-            "t::lib::Foo" : 0,
-            "t::lib::Importer" : 0
+            "Test::More" : 0
          }
       }
    },
