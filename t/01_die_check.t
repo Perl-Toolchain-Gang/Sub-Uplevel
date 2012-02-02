@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 # Kirk:   How we deal with death is at least as important as how we deal 
 #         with life, wouldn't you say? 
@@ -6,6 +6,11 @@
 # Kirk:   Well, now you have something new to think about. Carry on. 
  
 # XXX DG: Why is this test here?  Seems pointless.  Oh, well.
+
+use strict;
+BEGIN {
+	$^W = 1;
+}
 
 use lib qw(t/lib);
 use Test::More tests => 1;

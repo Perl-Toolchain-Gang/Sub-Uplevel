@@ -1,7 +1,11 @@
-#!/usr/bin/perl -Tw
+#!/usr/bin/perl
+
+use strict;
+BEGIN {
+    $^W = 1;
+}
 
 use lib qw(t/lib);
-use strict;
 use Test::More tests => 7;
 
 # Goal of these tests: confirm that Sub::Uplevel will honor (use) a

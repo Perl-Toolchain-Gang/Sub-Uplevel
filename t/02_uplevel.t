@@ -1,4 +1,9 @@
-#!/usr/bin/perl -Tw
+#!/usr/bin/perl
+
+use strict;
+BEGIN {
+	$^W = 1;
+}
 
 use lib qw(t/lib);
 use strict;
