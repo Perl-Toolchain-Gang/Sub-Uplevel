@@ -12,7 +12,6 @@ BEGIN {
 	$^W = 1;
 }
 
-use lib qw(t/lib);
 use Test::More tests => 1;
 
 #line 12

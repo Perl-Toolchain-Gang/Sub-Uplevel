@@ -5,7 +5,6 @@ BEGIN {
     $^W = 1;
 }
 
-use lib qw(t/lib);
 use Test::More tests => 7;
 
 # Goal of these tests: confirm that Sub::Uplevel will honor (use) a

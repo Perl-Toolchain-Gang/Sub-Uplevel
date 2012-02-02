@@ -5,7 +5,6 @@ BEGIN {
     $^W = 1;
 }
 
-use lib qw(t/lib);
 use Test::More tests => 3;
 
 BEGIN { use_ok('Sub::Uplevel'); }

@@ -5,8 +5,6 @@ BEGIN {
 	$^W = 1;
 }
 
-use lib qw(t/lib);
-use strict;
 use Test::More tests => 23;
 
 BEGIN { use_ok('Sub::Uplevel'); }
@@ -130,7 +128,7 @@ HA!  Even carp is fooled! at $0 line 88
 CARP
 
 
-use Foo;
+use t::lib::Foo;
 can_ok( 'main', 'fooble' );
 
 #line 114
