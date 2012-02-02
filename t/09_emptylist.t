@@ -1,10 +1,13 @@
+#!/usr/bin/perl
+
 use strict;
-use Sub::Uplevel;
-use lib qw(t/lib);
+BEGIN { $^W = 1 }
+
 use Test::More;
 
-plan tests => 3;
+use Sub::Uplevel;
 
+plan tests => 3;
 
 sub get_caller {
     return caller(shift);

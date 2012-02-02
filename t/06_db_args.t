@@ -1,9 +1,7 @@
 #!/usr/bin/perl
 
 use strict;
-BEGIN {
-    $^W = 1;
-}
+BEGIN { $^W = 1 }
 
 use Test::More tests => 3;
 
