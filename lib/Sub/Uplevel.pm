@@ -2,14 +2,22 @@ package Sub::Uplevel;
 
 use 5.006;
 use strict;
-our $VERSION = '0.22';
+
+our $VERSION = '0.23';
 $VERSION = eval $VERSION;
+
+# Frame check global constant
+our $CHECK_FRAMES;
+BEGIN {
+  $CHECK_FRAMES = !! $CHECK_FRAMES;
+}
+use constant CHECK_FRAMES => $CHECK_FRAMES;
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
 
 if ( not defined *CORE::GLOBAL::caller{CODE} ) {
-    *CORE::GLOBAL::caller = \&_normal_caller;
+  *CORE::GLOBAL::caller = \&_normal_caller;
 }
 
 # modules to force reload if ":aggressive" is specified
@@ -42,7 +50,7 @@ sub _force_reload {
     require $m if delete $INC{$m};
   }
 }
-  
+
 =head1 NAME
 
 Sub::Uplevel - apparently run a function in a higher stack frame
@@ -107,8 +115,23 @@ you can do this:
         return @out;
     }
 
-C<uplevel> will issue a warning if C<$num_frames> is more than the current call
-stack depth.
+C<uplevel> has the ability to issue a warning if C<$num_frames> is more than
+the current call stack depth, although this warning is disabled and compiled
+out by default as the check is relatively expensive.
+
+To enable the check for debugging or testing, you should set the global
+C<$Sub::Uplevel::CHECK_FRAMES> to true before loading Sub::Uplevel for the
+first time as follows:
+
+    #!/usr/bin/perl
+    
+    BEGIN {
+        $Sub::Uplevel::CHECK_FRAMES = 1;
+    }
+    use Sub::Uplevel;
+
+Setting or changing the global after the module has been loaded will have
+no effect.
 
 =cut
 
@@ -140,7 +163,7 @@ sub uplevel {
     # restore old warnings state
     $^W = $old_W;
 
-    if ( $num_frames >= _apparent_stack_height() ) {
+    if ( CHECK_FRAMES and $num_frames >= _apparent_stack_height() ) {
       require Carp;
       Carp::carp("uplevel $num_frames is more than the caller stack");
     }

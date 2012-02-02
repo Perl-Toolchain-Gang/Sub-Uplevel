@@ -1,5 +1,10 @@
 Changes for Sub::Uplevel
 
+0.23 to be released
+
+    - added: the $Sub::Uplevel::CHECK_FRAMES global constant to enable the
+      frame depth checking and compile it out if not needed.
+
 0.22 Tue Nov 17 05:38:42 EST 2009
 
     - meta: added repository to metadata [Alexandr Ciornii]
