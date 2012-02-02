@@ -1,9 +1,8 @@
 package Sub::Uplevel;
-# ABSTRACT: apparently run a function in a higher stack frame
-# VERSION
-
 use 5.006;
 use strict;
+# ABSTRACT: apparently run a function in a higher stack frame
+# VERSION
 
 # Frame check global constant
 our $CHECK_FRAMES;
@@ -23,7 +22,7 @@ if ( not defined *CORE::GLOBAL::caller{CODE} ) {
 my @reload_list = qw/Exporter Exporter::Heavy/;
 
 sub import {
-  no strict 'refs';
+  no strict 'refs'; ## no critic
   my ($class, @args) = @_;
   for my $tag ( @args, 'uplevel' ) {
     if ( $tag eq 'uplevel' ) {
@@ -303,7 +302,7 @@ CORE::GLOBAL::caller, you are probably asking for trouble.
 You B<should> load Sub::Uplevel as early as possible within your program.  As
 with all CORE::GLOBAL overloading, the overload will not affect modules that
 have already been compiled prior to the overload.  One module that often is
-unavoidably loaded prior to Sub::Uplevel is Exporter.  To forceably recompile
+unavoidably loaded prior to Sub::Uplevel is Exporter.  To forcibly recompile
 Exporter (and Exporter::Heavy) after loading Sub::Uplevel, use it with the
 ":aggressive" tag:
 
