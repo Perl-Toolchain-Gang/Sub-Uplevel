@@ -2,14 +2,22 @@ package Sub::Uplevel;
 
 use 5.006;
 use strict;
-our $VERSION = '0.22';
+
+our $VERSION = '0.23';
 $VERSION = eval $VERSION;
+
+# Frame check global constant
+our $CHECK_FRAMES;
+BEGIN {
+  $CHECK_FRAMES = !! $CHECK_FRAMES;
+}
+use constant CHECK_FRAMES => $CHECK_FRAMES;
 
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
 
 if ( not defined *CORE::GLOBAL::caller{CODE} ) {
-    *CORE::GLOBAL::caller = \&_normal_caller;
+  *CORE::GLOBAL::caller = \&_normal_caller;
 }
 
 # modules to force reload if ":aggressive" is specified
@@ -42,7 +50,7 @@ sub _force_reload {
     require $m if delete $INC{$m};
   }
 }
-  
+
 =head1 NAME
 
 Sub::Uplevel - apparently run a function in a higher stack frame
@@ -107,8 +115,23 @@ you can do this:
         return @out;
     }
 
-C<uplevel> will issue a warning if C<$num_frames> is more than the current call
-stack depth.
+C<uplevel> has the ability to issue a warning if C<$num_frames> is more than
+the current call stack depth, although this warning is disabled and compiled
+out by default as the check is relatively expensive.
+
+To enable the check for debugging or testing, you should set the global
+C<$Sub::Uplevel::CHECK_FRAMES> to true before loading Sub::Uplevel for the
+first time as follows:
+
+    #!/usr/bin/perl
+    
+    BEGIN {
+        $Sub::Uplevel::CHECK_FRAMES = 1;
+    }
+    use Sub::Uplevel;
+
+Setting or changing the global after the module has been loaded will have
+no effect.
 
 =cut
 
@@ -126,9 +149,7 @@ sub _apparent_stack_height {
 }
 
 sub uplevel {
-    my($num_frames, $func, @args) = @_;
-    
-    # backwards compatible version of "no warnings 'redefine'"
+    # Backwards compatible version of "no warnings 'redefine'"
     my $old_W = $^W;
     $^W = 0;
 
@@ -136,41 +157,36 @@ sub uplevel {
     local $Caller_Proxy = *CORE::GLOBAL::caller{CODE}
         if *CORE::GLOBAL::caller{CODE} != \&_uplevel_caller;
     local *CORE::GLOBAL::caller = \&_uplevel_caller;
-    
-    # restore old warnings state
+
+    # Restore old warnings state
     $^W = $old_W;
 
-    if ( $num_frames >= _apparent_stack_height() ) {
+    if ( CHECK_FRAMES and $_[0] >= _apparent_stack_height() ) {
       require Carp;
-      Carp::carp("uplevel $num_frames is more than the caller stack");
+      Carp::carp("uplevel $_[0] is more than the caller stack");
     }
 
-    local @Up_Frames = ($num_frames, @Up_Frames );
-    
-    return $func->(@args);
+    local @Up_Frames = (shift, @Up_Frames );
+
+    my $function = shift;
+    return $function->(@_);
 }
 
 sub _normal_caller (;$) { ## no critic Prototypes
     my $height = $_[0];
     $height++;
     if ( CORE::caller() eq 'DB' ) {
-        # passthrough the @DB::args trick
+        # Passthrough the @DB::args trick
         package DB;
-        if( wantarray and !@_ ) {
+        if ( wantarray and ! @_ ) {
             return (CORE::caller($height))[0..2];
         }
-        else {
-            return CORE::caller($height);
-        }
+        return CORE::caller($height);
     }
-    else {
-        if( wantarray and !@_ ) {
-            return (CORE::caller($height))[0..2];
-        }
-        else {
-            return CORE::caller($height);
-        }
+    if ( wantarray and ! @_ ) {
+        return (CORE::caller($height))[0..2];
     }
+    return CORE::caller($height);
 }
 
 sub _uplevel_caller (;$) { ## no critic Prototypes
@@ -228,7 +244,7 @@ in the call stack, i.e. the requested height plus any uplevel adjustments
 found during the search
 
 =end _dagolden
-        
+
 =cut
 
     my $saw_uplevel = 0;
@@ -263,15 +279,9 @@ found during the search
         @caller = $Caller_Proxy->($height + $adjust + 1);
     }
 
-    if( wantarray ) {
-        if( !@_ ) {
-            @caller = @caller[0..2];
-        }
-        return @caller;
-    }
-    else {
-        return $caller[0];
-    }
+    return $caller[0] if ! wantarray;
+    @caller = @caller[0..2] if ! @_;
+    return @caller;
 }
 
 =back

@@ -1,4 +1,4 @@
-package Importer;
+package t::lib::Importer;
 use warnings;
 use strict;
 use Sub::Uplevel qw/:aggressive/;
