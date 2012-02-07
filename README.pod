@@ -4,7 +4,7 @@ Sub::Uplevel - apparently run a function in a higher stack frame
 
 =head1 VERSION
 
-version 0.23_02
+version 0.23_03
 
 =head1 SYNOPSIS
 

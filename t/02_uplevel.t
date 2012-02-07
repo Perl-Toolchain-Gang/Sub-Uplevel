@@ -94,6 +94,7 @@ eval { wrap_croak(2) };
 $croak_regex = quotemeta( <<"CARP" );
 Now we can fool croak! at $0 line 64
 CARP
+$croak_regex =~ s/64/64\.?/; # Perl 5.15 series Carp adds period
 like( $@, "/$croak_regex/", 'croak() fooled');
 
 #line 79
