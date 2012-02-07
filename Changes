@@ -2,6 +2,9 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
+    - fixed: Perl 5.15 series Carp changes output format of messages (adds
+      a period).  This fixes the test regular expressions. [Andreas Koenig]
+
 0.23_01   2012-02-02 10:41:31 EST5EDT
 
     - added: the $Sub::Uplevel::CHECK_FRAMES global constant to enable the

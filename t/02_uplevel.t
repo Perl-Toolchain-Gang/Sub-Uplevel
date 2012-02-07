@@ -82,6 +82,7 @@ my $croak_regex = quotemeta( <<"CARP" );
 Now we can fool croak! at $0 line 64
 	main::wrap_croak(1) called at $0 line 72
 CARP
+$croak_regex =~ s/64/64\.?/; # Perl 5.15 series Carp adds period
 $croak_regex .= '\t(require 0|eval \{\.\.\.\})'
                 . quotemeta( " called at $0 line 72" );
 like( $@, "/$croak_regex/", 'croak() fooled');
@@ -120,10 +121,12 @@ $warning = '';
 #line 98
     wrap_carp();
 }
-is( $warning, <<CARP, 'carp() fooled' );
+my $carp_regex = quotemeta( <<"CARP" );
 HA!  Even carp is fooled! at $0 line 88
 	main::wrap_carp() called at $0 line 98
 CARP
+$carp_regex =~ s/88/88\.?/; # Perl 5.15 series Carp adds period
+like( $warning, "/$carp_regex/", 'carp() fooled' );
 
 
 use t::lib::Foo;

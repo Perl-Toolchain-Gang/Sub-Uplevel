@@ -52,7 +52,7 @@
    "provides" : {
       "Sub::Uplevel" : {
          "file" : "lib/Sub/Uplevel.pm",
-         "version" : "0.23_01"
+         "version" : "0.23_02"
       }
    },
    "release_status" : "testing",
@@ -68,6 +68,6 @@
          "web" : "https://github.com/dagolden/sub-uplevel"
       }
    },
-   "version" : "0.23_01"
+   "version" : "0.23_02"
 }
 
