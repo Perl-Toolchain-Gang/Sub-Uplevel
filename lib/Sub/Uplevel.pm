@@ -21,6 +21,9 @@ if ( not defined *CORE::GLOBAL::caller{CODE} ) {
 # modules to force reload if ":aggressive" is specified
 my @reload_list = qw/Exporter Exporter::Heavy/;
 
+# keep track of where CORE::GLOBAL::caller was restored
+my $be_gone;
+
 sub import {
   no strict 'refs'; ## no critic
   my ($class, @args) = @_;
@@ -47,6 +50,14 @@ sub _force_reload {
     $m .= ".pm";
     require $m if delete $INC{$m};
   }
+}
+
+sub unimport {
+  my $globals = do { no strict 'refs'; \%{'CORE::GLOBAL::'} };
+  delete $globals->{caller}
+    if *CORE::GLOBAL::caller{CODE} == \&_uplevel_caller
+    || *CORE::GLOBAL::caller{CODE} == \&_normal_caller;
+  $be_gone = [CORE::caller()];
 }
 
 =head1 SYNOPSIS
@@ -135,6 +146,13 @@ sub _apparent_stack_height {
 }
 
 sub uplevel {
+    if ($be_gone) {
+      die
+        sprintf qq(uplevel disabled at %s line %d, but later called at %s line %d\n),
+        @{$be_gone}[1,2],
+        (caller)[1,2];
+    }
+    
     # Backwards compatible version of "no warnings 'redefine'"
     my $old_W = $^W;
     $^W = 0;
@@ -290,6 +308,13 @@ If this code frightens you B<you should not use this module.>
 Well, the bad news is uplevel() is about 5 times slower than a normal
 function call.  XS implementation anyone?  It also slows down every invocation
 of caller(), regardless of whether uplevel() is in effect.
+
+There is experimental support for restoring Perl's built-in (faster)
+caller() implementation using C<< no Sub::Uplevel >> after you've finished
+using Sub::Uplevel. After doing this, caller() will be faster but any
+use of uplevel() B<anywhere> in your script (including modules) will croak.
+This is a one-time deal. Once you've called C<< no Sub::Uplevel >> once,
+no amount of work will bring uplevel() back again.
 
 Sub::Uplevel overrides CORE::GLOBAL::caller temporarily for the scope of
 each uplevel call.  It does its best to work with any previously existing
