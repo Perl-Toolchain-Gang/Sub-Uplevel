@@ -5,7 +5,7 @@
       "David Golden <dagolden@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300005, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Dist::Zilla version 4.300009, CPAN::Meta::Converter version 2.120630",
    "license" : [
       "perl_5"
    ],
@@ -33,26 +33,26 @@
       },
       "runtime" : {
          "requires" : {
-            "Carp" : 0,
-            "constant" : 0,
+            "Carp" : "0",
+            "constant" : "0",
             "perl" : "5.006",
-            "strict" : 0,
-            "warnings" : 0
+            "strict" : "0",
+            "warnings" : "0"
          }
       },
       "test" : {
          "requires" : {
-            "Exporter" : 0,
-            "File::Find" : 0,
-            "File::Temp" : 0,
-            "Test::More" : 0
+            "Exporter" : "0",
+            "File::Find" : "0",
+            "File::Temp" : "0",
+            "Test::More" : "0"
          }
       }
    },
    "provides" : {
       "Sub::Uplevel" : {
          "file" : "lib/Sub/Uplevel.pm",
-         "version" : "0.24"
+         "version" : "0.25"
       }
    },
    "release_status" : "stable",
@@ -68,6 +68,6 @@
          "web" : "https://github.com/dagolden/sub-uplevel"
       }
    },
-   "version" : "0.24"
+   "version" : "0.25"
 }
 
