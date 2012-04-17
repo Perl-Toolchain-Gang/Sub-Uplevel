@@ -38,7 +38,10 @@ BEGIN {
 
     use_ok('Sub::Uplevel');
 
-    is( *CORE::GLOBAL::caller{CODE}, \&Sub::Uplevel::_normal_caller,
+    my $exp = $] ge '5.015003'  ? \&Sub::Uplevel::_wrap_caller
+                                : \&Sub::Uplevel::_pp_caller;
+
+    is( *CORE::GLOBAL::caller{CODE}, $exp,
         "Sub::Uplevel's normal caller override in place"
     );
 

@@ -14,8 +14,9 @@ use constant CHECK_FRAMES => $CHECK_FRAMES;
 # We must override *CORE::GLOBAL::caller if it hasn't already been 
 # overridden or else Perl won't see our local override later.
 
+# XXX not sure why we have to wrap/goto CORE::caller, but direct ref fails
 if ( not defined *CORE::GLOBAL::caller{CODE} ) {
-  *CORE::GLOBAL::caller = \&_normal_caller;
+  *CORE::GLOBAL::caller = $] ge '5.015003' ? \&_wrap_caller : \&_pp_caller;
 }
 
 # modules to force reload if ":aggressive" is specified
@@ -158,7 +159,9 @@ sub uplevel {
     return $function->(@_);
 }
 
-sub _normal_caller (;$) { ## no critic Prototypes
+sub _wrap_caller(;$) { goto &CORE::caller } # only works in v5.15.3+
+
+sub _pp_caller (;$) { ## no critic Prototypes
     my ($height) = @_;
     $height++;
     my @caller = CORE::caller($height);
