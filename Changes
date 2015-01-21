@@ -2,6 +2,9 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
+    - fixed: 00-compile.t passes under Windows (bug #98230). (Fixed by
+      using updated DistZilla bundle.) [Michael Gray]
+
 0.24      2012-02-20 22:18:46 EST5EDT
 
     - no changes from 0.23_03
