@@ -2,8 +2,19 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
-    - fixed: 00-compile.t passes under Windows (bug #98230). (Fixed by
-      using updated DistZilla bundle.) [Michael Gray]
+    [Fixed]
+
+    - fixed: 00-compile.t failures under Windows (bug #98230).
+      The 00-compile.t file has been moved to a release test and is
+      no longer shipped.  [Michael Gray]
+
+    [Meta]
+
+    - moved bug tracker to Github
+
+    - updated repo files explaining how to contribute
+
+    - enabled Travis CI
 
 0.24      2012-02-20 22:18:46 EST5EDT
 
