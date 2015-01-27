@@ -3,7 +3,7 @@ use 5.006;
 use strict;
 # ABSTRACT: apparently run a function in a higher stack frame
 
-our $VERSION = '0.25';
+our $VERSION = '0.26';
 
 # Frame check global constant
 our $CHECK_FRAMES;
