@@ -241,10 +241,10 @@ found during the search
     # We *must* use CORE::caller here since we need the real stack not what 
     # some other override says the stack looks like, just in case that other
     # override breaks things in some horrible way
-
+    my $test_caller;
     for ( my $up = 0; $up <= $height + $adjust; $up++ ) {
-        my @caller = CORE::caller($up + 1); 
-        if( defined $caller[0] && $caller[0] eq __PACKAGE__ ) {
+        $test_caller = scalar CORE::caller($up + 1);
+        if( $test_caller && $test_caller eq __PACKAGE__ ) {
             # add one for each uplevel call seen
             # and look into the uplevel stack for the offset
             $adjust += 1 + $Up_Frames[$saw_uplevel];
