@@ -2,6 +2,10 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
+    [~Internal~]
+
+    - Optimized calls to caller()
+
 0.25      2015-01-26 20:32:52-05:00 America/New_York
 
     [Fixed]
