@@ -130,6 +130,7 @@ $carp_regex =~ s/88/88\.?/; # Perl 5.15 series Carp adds period
 like( $warning, "/$carp_regex/", 'carp() fooled' );
 
 
+use lib '.';
 use t::lib::Foo;
 can_ok( 'main', 'fooble' );
 
