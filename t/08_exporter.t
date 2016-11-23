@@ -11,8 +11,9 @@ plan tests => 1;
 # import() function
 
 package main;
-require t::lib::Importer;
-require t::lib::Bar;
-t::lib::Importer::import_for_me('t::lib::Bar','func3');
+use lib 't/lib';
+require Importer;
+require Bar;
+Importer::import_for_me('Bar','func3');
 can_ok('main','func3');
 
