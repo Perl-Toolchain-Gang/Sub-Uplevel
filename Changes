@@ -2,6 +2,8 @@ Changes for Sub::Uplevel
 
 {{$NEXT}}
 
+0.2700    2017-03-30 10:09:46-04:00 America/New_York (TRIAL RELEASE)
+
     [Fixed]
 
     - Tests now work if '.' is not in @INC
