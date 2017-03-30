@@ -1,4 +1,4 @@
-package Importer;
+package MyImporter;
 use warnings;
 use strict;
 use Sub::Uplevel qw/:aggressive/;
