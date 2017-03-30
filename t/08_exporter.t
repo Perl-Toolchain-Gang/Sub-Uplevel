@@ -11,6 +11,7 @@ plan tests => 1;
 # import() function
 
 package main;
+use lib '.';
 require t::lib::Importer;
 require t::lib::Bar;
 t::lib::Importer::import_for_me('t::lib::Bar','func3');
